@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule + Workout Planner</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Schedule + Workout Planner</h1>
+        <p>Simple daily planning with calendar view.</p>
+      </div>
+      <button id="open-form" class="btn primary">+ Add item</button>
+    </header>
+
+    <main class="layout">
+      <section class="card calendar-card">
+        <div class="calendar-header">
+          <button id="prev-month" class="btn ghost">◀</button>
+          <h2 id="month-label"></h2>
+          <button id="next-month" class="btn ghost">▶</button>
+        </div>
+        <div class="weekday-row" id="weekday-row"></div>
+        <div id="calendar-grid" class="calendar-grid"></div>
+      </section>
+
+      <section class="card agenda-card">
+        <div class="agenda-header">
+          <h2 id="selected-date-label"></h2>
+          <span id="item-count" class="pill"></span>
+        </div>
+        <div id="agenda-list" class="agenda-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="item-dialog">
+    <form id="item-form" method="dialog">
+      <h3>Add item</h3>
+      <label>Title<input name="title" required /></label>
+      <label>Date<input name="date" type="date" required /></label>
+      <label>Category
+        <select name="category">
+          <option value="schedule">Schedule</option>
+          <option value="workout">Workout</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+      <label>Notes<textarea name="notes" rows="3"></textarea></label>
+      <menu>
+        <button value="cancel" class="btn ghost">Cancel</button>
+        <button id="save-item" value="default" class="btn primary">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <template id="agenda-item-template">
+    <article class="agenda-item">
+      <div>
+        <h4></h4>
+        <p class="meta"></p>
+        <p class="notes"></p>
+      </div>
+      <button class="btn ghost delete">Delete</button>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

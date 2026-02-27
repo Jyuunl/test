@@ -1,62 +1,79 @@
-# test
+# Schedule + Workout Tracker
 
-A minimal starter repository intended to grow into a real project.
+You now have **two ways** to use this project:
 
-## Current status
+1. **CLI app** (`track-planner`) for terminal usage.
+2. **Web UI app** (`webapp/`) with a clean calendar + day agenda layout.
 
-This repository is intentionally small right now and currently includes only project documentation. There is no runtime code, package manager manifest, or CI pipeline yet.
+---
 
-## Repository structure
+## Open the clean UI app (calendar view)
 
-```text
-.
-└── README.md
+From the repo root, run:
+
+```bash
+python -m http.server 8000
 ```
 
-## What newcomers should know
-
-1. **This repo is a scaffold**: the core codebase has not been created yet.
-2. **Conventions should be decided early**: language choice, formatting/linting, and testing strategy should be agreed before implementation starts.
-3. **Documentation-first helps**: this README should remain the source of truth for setup and contribution workflows as code is added.
-
-## Suggested next milestones
-
-### 1) Pick and initialize a stack
-Choose a primary language/framework and add its project manifest:
-- Node.js: `package.json`
-- Python: `pyproject.toml`
-- Rust: `Cargo.toml`
-
-### 2) Create a baseline layout
-A typical first-pass layout:
+Then open:
 
 ```text
-.
-├── src/          # application code
-├── tests/        # automated tests
-├── docs/         # architecture and decision records
-└── README.md
+http://localhost:8000/webapp/
 ```
 
-### 3) Add quality gates
-Set up and document:
-- formatter
-- linter
-- test runner
-- CI workflow
+### What the UI includes
 
-### 4) Ship a first vertical slice
-Implement one tiny end-to-end feature to establish coding patterns and review standards.
+- Month calendar with per-day item counts.
+- Click any day to view that day's schedule/workout/other items.
+- Add new items with title, date, category, and notes.
+- Delete items from the day agenda.
+- Data is saved in your browser `localStorage`.
 
-## Learning pointers for contributors
+---
 
-- Learn the chosen stack's build and dependency model.
-- Learn how tests are organized and run locally.
-- Learn contribution expectations (branching, PRs, review checklist) once those are documented.
+## PC and phone support
 
-## Contribution note
+- **PC**: yes, open the web UI in any modern browser.
+- **Phone**: yes, if the UI is hosted where your phone can access it (same network server, deployed site, etc.).
 
-Until implementation begins, contributions should focus on:
-- clarifying scope and requirements,
-- improving documentation,
-- proposing architecture decisions.
+---
+
+## Does it sync between PC and phone?
+
+### Web UI version
+- Sync is **not automatic by default** because browser `localStorage` is device-specific.
+- For true sync, host a backend/API + shared database (or deploy this as a cloud app with account login).
+
+### CLI version
+- CLI stores data in local JSON (`~/.track_planner/tasks.json`) unless you pass `--data-file`.
+- You can approximate sync by pointing multiple devices to a shared cloud-synced file path.
+
+---
+
+## CLI quick start (optional)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+track-planner --help
+```
+
+### CLI examples
+
+```bash
+track-planner add schedule "Doctor appointment" --due-date 2026-03-15
+track-planner import-plan workout $'- Monday: Upper body\n- Tuesday: Lower body'
+track-planner list --category workout
+track-planner complete 2
+```
+
+---
+
+## Development
+
+Run tests:
+
+```bash
+PYTHONPATH=src python -m pytest -q
+```
