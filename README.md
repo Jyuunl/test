@@ -13,17 +13,12 @@ A lightweight Python CLI app to track:
 - Mark tasks complete.
 - Persist data locally in JSON.
 
-## Quick start
+## Quick start (PC)
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
-```
-
-Then run:
-
-```bash
 track-planner --help
 ```
 
@@ -55,19 +50,34 @@ track-planner list --all
 track-planner complete 2
 ```
 
-## Data storage
+## Can I use this on PC and phone?
 
-By default, tasks are stored in:
+Yes, but today this is a **CLI app** (terminal app), not a mobile app UI.
+
+- **PC**: works directly in Terminal/PowerShell once Python is installed.
+- **Phone**: possible through a terminal app that supports Python.
+  - Android examples: Termux, Pydroid (depending on setup).
+  - iPhone/iPad examples: Pythonista / shell-style apps (with limitations).
+
+## Does it sync between devices?
+
+Not automatically yet.
+
+Right now, the app stores tasks in a local JSON file:
 
 ```text
 ~/.track_planner/tasks.json
 ```
 
-You can override with:
+To share data between devices, point both installs to the same synced file location (for example, a cloud-synced folder):
 
 ```bash
-track-planner --data-file ./my_tasks.json list
+track-planner --data-file /path/to/synced-folder/tasks.json list
 ```
+
+If both devices use the same synced file path, they can stay in sync via that file service.
+
+> Tip: avoid editing from both devices at exactly the same time to reduce overwrite conflicts.
 
 ## Development
 
