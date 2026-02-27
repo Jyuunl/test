@@ -1,62 +1,78 @@
-# test
+# Schedule + Workout Tracker
 
-A minimal starter repository intended to grow into a real project.
+A lightweight Python CLI app to track:
+- daily schedule items,
+- workout plans generated from ChatGPT,
+- and any other personal tasks.
 
-## Current status
+## Features
 
-This repository is intentionally small right now and currently includes only project documentation. There is no runtime code, package manager manifest, or CI pipeline yet.
+- Add tasks by category: `schedule`, `workout`, `other`.
+- Import multiple tasks from a ChatGPT bullet-list plan.
+- List open tasks (or include completed tasks).
+- Mark tasks complete.
+- Persist data locally in JSON.
 
-## Repository structure
+## Quick start
 
-```text
-.
-└── README.md
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
 ```
 
-## What newcomers should know
+Then run:
 
-1. **This repo is a scaffold**: the core codebase has not been created yet.
-2. **Conventions should be decided early**: language choice, formatting/linting, and testing strategy should be agreed before implementation starts.
-3. **Documentation-first helps**: this README should remain the source of truth for setup and contribution workflows as code is added.
-
-## Suggested next milestones
-
-### 1) Pick and initialize a stack
-Choose a primary language/framework and add its project manifest:
-- Node.js: `package.json`
-- Python: `pyproject.toml`
-- Rust: `Cargo.toml`
-
-### 2) Create a baseline layout
-A typical first-pass layout:
-
-```text
-.
-├── src/          # application code
-├── tests/        # automated tests
-├── docs/         # architecture and decision records
-└── README.md
+```bash
+track-planner --help
 ```
 
-### 3) Add quality gates
-Set up and document:
-- formatter
-- linter
-- test runner
-- CI workflow
+## Usage examples
 
-### 4) Ship a first vertical slice
-Implement one tiny end-to-end feature to establish coding patterns and review standards.
+### Add a schedule item
 
-## Learning pointers for contributors
+```bash
+track-planner add schedule "Doctor appointment" --due-date 2026-03-15 --notes "Bring insurance card"
+```
 
-- Learn the chosen stack's build and dependency model.
-- Learn how tests are organized and run locally.
-- Learn contribution expectations (branching, PRs, review checklist) once those are documented.
+### Import a ChatGPT workout plan
 
-## Contribution note
+```bash
+track-planner import-plan workout $'- Monday: Upper body\n- Tuesday: Lower body\n- Wednesday: Cardio'
+```
 
-Until implementation begins, contributions should focus on:
-- clarifying scope and requirements,
-- improving documentation,
-- proposing architecture decisions.
+### List tasks
+
+```bash
+track-planner list
+track-planner list --category workout
+track-planner list --all
+```
+
+### Complete a task
+
+```bash
+track-planner complete 2
+```
+
+## Data storage
+
+By default, tasks are stored in:
+
+```text
+~/.track_planner/tasks.json
+```
+
+You can override with:
+
+```bash
+track-planner --data-file ./my_tasks.json list
+```
+
+## Development
+
+Run tests:
+
+```bash
+PYTHONPATH=src python -m pytest -q
+```
