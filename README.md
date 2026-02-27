@@ -1,62 +1,97 @@
-# test
+# Schedule + Workout Tracker
 
-A minimal starter repository intended to grow into a real project.
+You now have **two ways** to use this project:
 
-## Current status
+1. **CLI app** (`track-planner`) for terminal usage.
+2. **Web UI app** (`webapp/`) with a dark calendar + daily agenda.
 
-This repository is intentionally small right now and currently includes only project documentation. There is no runtime code, package manager manifest, or CI pipeline yet.
+---
 
-## Repository structure
+## Open the web app (dark theme)
 
-```text
-.
-└── README.md
+From repo root:
+
+```bash
+python -m http.server 8000
 ```
 
-## What newcomers should know
-
-1. **This repo is a scaffold**: the core codebase has not been created yet.
-2. **Conventions should be decided early**: language choice, formatting/linting, and testing strategy should be agreed before implementation starts.
-3. **Documentation-first helps**: this README should remain the source of truth for setup and contribution workflows as code is added.
-
-## Suggested next milestones
-
-### 1) Pick and initialize a stack
-Choose a primary language/framework and add its project manifest:
-- Node.js: `package.json`
-- Python: `pyproject.toml`
-- Rust: `Cargo.toml`
-
-### 2) Create a baseline layout
-A typical first-pass layout:
+Then open:
 
 ```text
-.
-├── src/          # application code
-├── tests/        # automated tests
-├── docs/         # architecture and decision records
-└── README.md
+http://localhost:8000/webapp/
 ```
 
-### 3) Add quality gates
-Set up and document:
-- formatter
-- linter
-- test runner
-- CI workflow
+---
 
-### 4) Ship a first vertical slice
-Implement one tiny end-to-end feature to establish coding patterns and review standards.
+## New UI features
 
-## Learning pointers for contributors
+- Dark theme by default.
+- Monthly calendar with daily item counts.
+- Daily agenda panel.
+- Add item with optional **time** and **reminder** toggle.
+- Browser notifications (when permission is granted).
+- “Import ChatGPT plan” button for pasted bullet-list plans.
 
-- Learn the chosen stack's build and dependency model.
-- Learn how tests are organized and run locally.
-- Learn contribution expectations (branching, PRs, review checklist) once those are documented.
+---
 
-## Contribution note
+## Notifications (web + phone)
 
-Until implementation begins, contributions should focus on:
-- clarifying scope and requirements,
-- improving documentation,
-- proposing architecture decisions.
+### Web (desktop browser)
+1. Open the app.
+2. Click **Enable alerts**.
+3. Add an item with date + time and keep **Notify me at event time** enabled.
+4. Keep the tab open (for this starter implementation).
+
+### Phone
+- If you open this from a mobile browser, notifications depend on browser support and permissions.
+- For reliable phone notifications when app is closed, the next step is to add:
+  - a **Service Worker**,
+  - **Web Push** (VAPID),
+  - and a backend push service.
+
+---
+
+## ChatGPT integration options
+
+### What is already included
+- The app includes an **Import ChatGPT plan** flow where you paste ChatGPT bullet points and convert each line into tasks.
+
+### Full API integration (recommended architecture)
+Use a backend so your OpenAI key is never exposed in browser JS:
+
+1. Build backend endpoint (example): `POST /api/chatgpt/plan`
+2. Backend calls OpenAI Responses/Chat API with user prompt.
+3. Backend returns normalized JSON tasks (title/date/category/time).
+4. Web app consumes that JSON and inserts into calendar.
+
+> Important: do **not** put your OpenAI API key directly in `webapp/app.js`.
+
+---
+
+## PC and phone sync
+
+Current web version stores data in browser `localStorage`, so sync is not automatic between devices.
+
+For real sync between PC + phone, add:
+- backend API
+- shared database (Postgres/Supabase/Firebase/etc.)
+- optional auth/login
+
+---
+
+## CLI quick start (optional)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+track-planner --help
+```
+
+## Development
+
+Run tests:
+
+```bash
+PYTHONPATH=src python -m pytest -q
+```
