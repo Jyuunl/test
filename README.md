@@ -1,19 +1,56 @@
 # Schedule + Workout Tracker
 
-A lightweight Python CLI app to track:
-- daily schedule items,
-- workout plans generated from ChatGPT,
-- and any other personal tasks.
+You now have **two ways** to use this project:
 
-## Features
+1. **CLI app** (`track-planner`) for terminal usage.
+2. **Web UI app** (`webapp/`) with a clean calendar + day agenda layout.
 
-- Add tasks by category: `schedule`, `workout`, `other`.
-- Import multiple tasks from a ChatGPT bullet-list plan.
-- List open tasks (or include completed tasks).
-- Mark tasks complete.
-- Persist data locally in JSON.
+---
 
-## Quick start (PC)
+## Open the clean UI app (calendar view)
+
+From the repo root, run:
+
+```bash
+python -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000/webapp/
+```
+
+### What the UI includes
+
+- Month calendar with per-day item counts.
+- Click any day to view that day's schedule/workout/other items.
+- Add new items with title, date, category, and notes.
+- Delete items from the day agenda.
+- Data is saved in your browser `localStorage`.
+
+---
+
+## PC and phone support
+
+- **PC**: yes, open the web UI in any modern browser.
+- **Phone**: yes, if the UI is hosted where your phone can access it (same network server, deployed site, etc.).
+
+---
+
+## Does it sync between PC and phone?
+
+### Web UI version
+- Sync is **not automatic by default** because browser `localStorage` is device-specific.
+- For true sync, host a backend/API + shared database (or deploy this as a cloud app with account login).
+
+### CLI version
+- CLI stores data in local JSON (`~/.track_planner/tasks.json`) unless you pass `--data-file`.
+- You can approximate sync by pointing multiple devices to a shared cloud-synced file path.
+
+---
+
+## CLI quick start (optional)
 
 ```bash
 python -m venv .venv
@@ -22,62 +59,16 @@ pip install -e .
 track-planner --help
 ```
 
-## Usage examples
-
-### Add a schedule item
+### CLI examples
 
 ```bash
-track-planner add schedule "Doctor appointment" --due-date 2026-03-15 --notes "Bring insurance card"
-```
-
-### Import a ChatGPT workout plan
-
-```bash
-track-planner import-plan workout $'- Monday: Upper body\n- Tuesday: Lower body\n- Wednesday: Cardio'
-```
-
-### List tasks
-
-```bash
-track-planner list
+track-planner add schedule "Doctor appointment" --due-date 2026-03-15
+track-planner import-plan workout $'- Monday: Upper body\n- Tuesday: Lower body'
 track-planner list --category workout
-track-planner list --all
-```
-
-### Complete a task
-
-```bash
 track-planner complete 2
 ```
 
-## Can I use this on PC and phone?
-
-Yes, but today this is a **CLI app** (terminal app), not a mobile app UI.
-
-- **PC**: works directly in Terminal/PowerShell once Python is installed.
-- **Phone**: possible through a terminal app that supports Python.
-  - Android examples: Termux, Pydroid (depending on setup).
-  - iPhone/iPad examples: Pythonista / shell-style apps (with limitations).
-
-## Does it sync between devices?
-
-Not automatically yet.
-
-Right now, the app stores tasks in a local JSON file:
-
-```text
-~/.track_planner/tasks.json
-```
-
-To share data between devices, point both installs to the same synced file location (for example, a cloud-synced folder):
-
-```bash
-track-planner --data-file /path/to/synced-folder/tasks.json list
-```
-
-If both devices use the same synced file path, they can stay in sync via that file service.
-
-> Tip: avoid editing from both devices at exactly the same time to reduce overwrite conflicts.
+---
 
 ## Development
 
